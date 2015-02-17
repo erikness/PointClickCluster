@@ -12,10 +12,6 @@ public class Main
 		applicationFrame.setVisible(true);
 		applicationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		/* Remove center from the layout - we only want two areas. */
-		BorderLayout layout = (BorderLayout) applicationFrame.getLayout();
-		applicationFrame.remove(layout.getLayoutComponent(BorderLayout.CENTER));
-
 		/* Put the application in the center of the screen */
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		applicationFrame.setLocation(
@@ -23,12 +19,14 @@ public class Main
 				screenSize.height / 2 - applicationFrame.getSize().height / 2);
 
 		JPanel toolsPanel = new ToolsPanel();
-		applicationFrame.getContentPane().add(BorderLayout.WEST, toolsPanel);
+        applicationFrame.getContentPane().add(BorderLayout.CENTER, toolsPanel);
+        toolsPanel.setPreferredSize(new Dimension(100, 500));
 
-		JPanel graphPanel = new GraphPanel();
+        //applicationFrame.getContentPane().add(BorderLayout.EAST, new JButton("Y'ALL!"));
+
+        JPanel graphPanel = new GraphPanel();
 		graphPanel.setPreferredSize(new Dimension(500, 500));
 		applicationFrame.getContentPane().add(BorderLayout.EAST, graphPanel);
-
 
 	}
 }

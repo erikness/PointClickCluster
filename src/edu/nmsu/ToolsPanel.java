@@ -12,6 +12,6 @@ public class ToolsPanel extends JPanel
 	public void paintComponent(Graphics g)
 	{
 		g.setColor(Color.ORANGE);
-		g.fillRect(0, 0, 500, 500);
+		g.fillRect(0, 0, 600, 500);
 	}
 }
