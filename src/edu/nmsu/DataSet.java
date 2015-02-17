@@ -24,10 +24,23 @@ public class DataSet implements Iterable<Point>
 		return points.iterator();
 	}
 
+    public int size()
+    {
+        return points.size();
+    }
+
 	public Point mean()
 	{
-		// TODO
-		return null;
+		// For now, assume that no numbers will be big enough to overflow.
+        double xTotal = 0;
+        double yTotal = 0;
+        
+        for (Point p : this) {
+            xTotal += p.x;
+            yTotal += p.y;
+        }
+
+        return new Point(xTotal / this.size(), yTotal / this.size());
 	}
 
 }
