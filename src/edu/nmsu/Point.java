@@ -13,4 +13,17 @@ public class Point
 		this.x = x;
 		this.y = y;
 	}
+
+    public static Point transform(Point p)
+    {
+        // Rotate-around-y matrix:
+        // [1  0]
+        // [0 -1]
+
+        // Scale matrix, where r is pixel length / grid length
+        // [r 0]
+        // [0 r]
+
+        return null;
+    }
 }
