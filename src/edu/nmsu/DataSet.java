@@ -36,11 +36,11 @@ public class DataSet implements Iterable<Point>
         double yTotal = 0;
         
         for (Point p : this) {
-            xTotal += p.x;
-            yTotal += p.y;
+            xTotal += p.asGrid().x;
+            yTotal += p.asGrid().y;
         }
 
-        return new Point(xTotal / this.size(), yTotal / this.size());
+        return Point.fromGrid(xTotal / this.size(), yTotal / this.size());
 	}
 
 }

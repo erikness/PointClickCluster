@@ -7,8 +7,12 @@ public class Main
 {
     public static void main(String[] args)
 	{
+		int appHeight = 500;
+		int toolsWidth = 100;
+		int appWidth = appHeight + toolsWidth;
+
 		JFrame applicationFrame = new JFrame();
-		applicationFrame.setSize(new Dimension(600, 500));
+		applicationFrame.setSize(new Dimension(appWidth, appHeight));
 		applicationFrame.setVisible(true);
 		applicationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -20,12 +24,10 @@ public class Main
 
 		JPanel toolsPanel = new ToolsPanel();
         applicationFrame.getContentPane().add(BorderLayout.CENTER, toolsPanel);
-        toolsPanel.setPreferredSize(new Dimension(100, 500));
-
-        //applicationFrame.getContentPane().add(BorderLayout.EAST, new JButton("Y'ALL!"));
+        toolsPanel.setPreferredSize(new Dimension(toolsWidth, appHeight));
 
         JPanel graphPanel = new GraphPanel();
-		graphPanel.setPreferredSize(new Dimension(500, 500));
+		graphPanel.setPreferredSize(new Dimension(appWidth - toolsWidth, appHeight));
 		applicationFrame.getContentPane().add(BorderLayout.EAST, graphPanel);
 
 	}

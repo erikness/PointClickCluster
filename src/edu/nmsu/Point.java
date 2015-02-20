@@ -37,7 +37,10 @@ public class Point
 
 	public static Point fromGrid(double x, double y)
 	{
-		return null;
+		Point p = new Point();
+		p.gridX = x;
+		p.gridY = y;
+		return p;
 	}
 
 	public static Point fromPixels(double x, double y)
@@ -68,6 +71,29 @@ public class Point
 		Pair centerPixels = center.asPixels();
 		newX += centerPixels.x;
 		newY += centerPixels.y;
+
+		return new Pair(newX, newY);
+	}
+
+	private static Pair gridFromPixels(double gridX, double gridY)
+	{
+		// inverse of gridFromPixels()
+		double newX = gridX;
+		double newY = gridY;
+		double xScale = pixelWidth / (gridXMax - gridXMin);
+		double yScale = pixelHeight / (gridYMax - gridYMin);
+
+		// translation
+		Pair centerPixels = center.asPixels();
+		newX -= centerPixels.x;
+		newY -= centerPixels.y;
+
+		// scaling
+		newX = newX / xScale;
+		newX = newY / yScale;
+
+		// rotation
+		newY = -1 * newY;
 
 		return new Pair(newX, newY);
 	}
