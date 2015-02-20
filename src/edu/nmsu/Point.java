@@ -1,5 +1,7 @@
 package edu.nmsu;
 
+import javafx.util.Pair;
+
 /**
  * Created by Erik Ness at 1/21/15 6:02 PM
  * 
@@ -21,77 +23,71 @@ public class Point
     private static double gridYMin;
     private static Point center;
 
+	public static class Pair
+	{
+		public double x;
+		public double y;
+
+		public Pair(double x, double y)
+		{
+			this.x = x;
+			this.y = y;
+		}
+	}
+
+	public static Point fromGrid(double x, double y)
+	{
+		return null;
+	}
+
+	public static Point fromPixels(double x, double y)
+	{
+		return null;
+	}
+
+	private static Pair pixelsFromGrid(double gridX, double gridY)
+	{
+		double newX = gridX;
+		double newY = gridY;
+		double xScale = pixelWidth / (gridXMax - gridXMin);
+		double yScale = pixelHeight / (gridYMax - gridYMin);
+		// Rotate-around-y matrix:
+		// [1  0]
+		// [0 -1]
+		newX = 1 * newX + 0 * newY;
+		newY = 0 * newX + -1 * newY;
+
+		// Scale matrix, where r is pixel length / grid length
+		// [xScale 0]
+		// [0      yScale]
+		newX = xScale * newX + 0 * newY;
+		newX = 0 * newX + yScale * newY;
+
+		// If we were linear algebra purists, we'd do some added-dimension
+		// transformation in order to translate, but here we'll just add.
+		Pair centerPixels = center.asPixels();
+		newX += centerPixels.x;
+		newY += centerPixels.y;
+
+		return new Pair(newX, newY);
+	}
+
     private double gridX;
     private double gridY;
 
-	/*public Point(double x, double y)
-	{
-		this.x = x;
-		this.y = y;
-	}*/
-
     private Point() {}  // I may not want a regular constructor...
-
-    public static Point fromGrid(double x, double y)
-    {
-        return null;   
-    }
-
-    public static Point fromPixels(double x, double y)
-    {
-        return null;
-    }
-
 
     /**
      * For context-free operations where you only need two numbers.
      */
-    public static class Pair
-    {
-        public double x;
-        public double y;
-        
-        public Pair(double x, double y)
-        {
-            this.x = x;
-            this.y = y;
-        }
-    }
 
     public Pair asGrid()
     {
-        return Pair(gridX, gridY);
+        return new Pair(gridX, gridY);
     }
 
     public Pair asPixels()
     {
-        return gridFromPixels();
-    }
-
-    private Pair gridFromPixels()
-    {
-        newX = gridX;
-        newY = gridY;
-        double xScale = pixelWidth / (gridXMax - gridXMin);
-        double yScale = pixelHeight / (gridYMax - gridYMin);
-        // Rotate-around-y matrix:
-        // [1  0]
-        // [0 -1]
-        newX = 1 * newX + 0 * newY;
-        newY = 0 * newX + -1 * newY;
-
-        // Scale matrix, where r is pixel length / grid length
-        // [xScale 0]
-        // [0      yScale]
-        newX = xScale * newX + 0 * newY;
-        newX = 0 * newX + yScale * newY;
-        
-        // If we were linear algebra purists, we'd do some added-dimension
-        // transformation in order to translate, but here we'll just add.
-        Pair centerPixels = center.asPixels();
-        newX += centerPixels.x;
-        newY += centerPixels.y;
-
-        return Pair(newX, newY);
-    }
+        return pixelsFromGrid(this.gridX, this.gridY);
+	}
 }
