@@ -1,6 +1,7 @@
 package edu.nmsu;
 
-
+import java.util.List;
+import java.util.ArrayList;
 import java.awt.*;
 import javax.swing.*;
 
@@ -9,15 +10,28 @@ import javax.swing.*;
  */
 public class GraphPanel extends JPanel
 {
-
+	private List<DataSet> datasets;
+	
+	public GraphPanel()
+	{	
+		super();
+		datasets = new ArrayList<DataSet>();
+	}
+	
 	public void paintComponent(Graphics g)
 	{
 		g.setColor(Color.BLUE);
 		g.fillRect(0, 0, 500, 600);
-		System.out.println("Graph width: " + this.getWidth());
-		System.out.println("Graph height: " + this.getWidth());
+		g.setColor(Color.RED);
+		g.fillRect(250, 250, 10, 10);
 
 		paintAxes(g);
+		paintDataSets(g);
+	}
+	
+	public void addDataSet(DataSet ds)
+	{
+		datasets.add(ds);
 	}
 
 	private void paintAxes(Graphics g)
@@ -34,5 +48,20 @@ public class GraphPanel extends JPanel
 		// y axis
 		g.drawLine(width / 2, 0, width / 2, height);
 		g.drawLine(width / 2 + 1, 0, width / 2 + 1, height);
+		
 	}
+	
+	private void paintDataSets(Graphics g)
+	{
+		int radius = 4; // hardcoded for now
+		
+		g.setColor(Color.BLACK);
+		for (DataSet ds : datasets) {
+			for (Point p : ds) {
+				int x = (int) p.asPixels().x;
+				int y = (int) p.asPixels().y;
+				g.fillRect(x - radius, y - radius, radius * 2, radius * 2);
+			}
+		}
+	} 
 }

@@ -3,6 +3,8 @@ package edu.nmsu;
 import javax.swing.*;
 import java.awt.*;
 
+import com.google.common.collect.Lists;
+
 public class Main
 {
     public static void main(String[] args)
@@ -10,6 +12,24 @@ public class Main
 		int appHeight = 500;
 		int toolsWidth = 100;
 		int appWidth = appHeight + toolsWidth;
+		
+		/* Initialize the static stuff in the Point class. */
+		Point.pixelWidth = appHeight + toolsWidth;
+		Point.pixelHeight = appHeight;
+		Point.gridXMax = 5;
+		Point.gridXMin = -5;
+		Point.gridYMax = 5;
+		Point.gridYMin = -5;
+		
+        DataSet ds = new DataSet(Lists.newArrayList(
+			Point.fromGrid(1, 1),
+			Point.fromGrid(2, 2),
+			Point.fromGrid(3, 4)));
+			
+		for (Point p : ds) {
+			System.out.println(p.asPixels().x);
+			System.out.println(p.asPixels().y);
+		}
 
 		JFrame applicationFrame = new JFrame();
 		applicationFrame.setSize(new Dimension(appWidth, appHeight));
@@ -26,9 +46,12 @@ public class Main
         applicationFrame.getContentPane().add(BorderLayout.CENTER, toolsPanel);
         toolsPanel.setPreferredSize(new Dimension(toolsWidth, appHeight));
 
-        JPanel graphPanel = new GraphPanel();
+        GraphPanel graphPanel = new GraphPanel();
+		
+		graphPanel.addDataSet(ds);
 		graphPanel.setPreferredSize(new Dimension(appWidth - toolsWidth, appHeight));
 		applicationFrame.getContentPane().add(BorderLayout.EAST, graphPanel);
-
+		
+		
 	}
 }

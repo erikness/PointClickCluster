@@ -15,13 +15,12 @@ import javafx.util.Pair;
  */
 public class Point
 {
-    private static int pixelWidth;
-    private static int pixelHeight;
-    private static double gridXMax;
-    private static double gridXMin;
-    private static double gridYMax;
-    private static double gridYMin;
-    private static Point center;
+    public static int pixelWidth;
+    public static int pixelHeight;
+    public static double gridXMax;
+    public static double gridXMin;
+    public static double gridYMax;
+    public static double gridYMin;
 
 	public static class Pair
 	{
@@ -45,7 +44,11 @@ public class Point
 
 	public static Point fromPixels(double x, double y)
 	{
-		return null;
+		Pair gridPair = gridFromPixels(x, y);
+		Point p = new Point();
+		p.gridX = gridPair.x;
+		p.gridY = gridPair.y;
+		return p;
 	}
 
 	private static Pair pixelsFromGrid(double gridX, double gridY)
@@ -64,13 +67,12 @@ public class Point
 		// [xScale 0]
 		// [0      yScale]
 		newX = xScale * newX + 0 * newY;
-		newX = 0 * newX + yScale * newY;
+		newY = 0 * newX + yScale * newY;
 
 		// If we were linear algebra purists, we'd do some added-dimension
 		// transformation in order to translate, but here we'll just add.
-		Pair centerPixels = center.asPixels();
-		newX += centerPixels.x;
-		newY += centerPixels.y;
+		newX += pixelWidth / 2;
+		newY += pixelHeight / 2;
 
 		return new Pair(newX, newY);
 	}
@@ -84,9 +86,8 @@ public class Point
 		double yScale = pixelHeight / (gridYMax - gridYMin);
 
 		// translation
-		Pair centerPixels = center.asPixels();
-		newX -= centerPixels.x;
-		newY -= centerPixels.y;
+		newX -= pixelWidth / 2;
+		newY -= pixelHeight / 2;
 
 		// scaling
 		newX = newX / xScale;
