@@ -60,6 +60,7 @@ public class Point
 		// Rotate-around-y matrix:
 		// [1  0]
 		// [0 -1]
+		
 		newX = 1 * newX + 0 * newY;
 		newY = 0 * newX + -1 * newY;
 

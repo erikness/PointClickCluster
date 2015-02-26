@@ -14,7 +14,7 @@ public class Main
 		int appWidth = appHeight + toolsWidth;
 		
 		/* Initialize the static stuff in the Point class. */
-		Point.pixelWidth = appHeight + toolsWidth;
+		Point.pixelWidth = appHeight;
 		Point.pixelHeight = appHeight;
 		Point.gridXMax = 5;
 		Point.gridXMin = -5;
@@ -26,13 +26,38 @@ public class Main
 			Point.fromGrid(2, 2),
 			Point.fromGrid(3, 4)));
 			
-		for (Point p : ds) {
+		/*for (Point p : ds) {
 			System.out.println(p.asPixels().x);
 			System.out.println(p.asPixels().y);
-		}
+		}*/
 
 		JFrame applicationFrame = new JFrame();
-		applicationFrame.setSize(new Dimension(appWidth, appHeight));
+		//applicationFrame.setSize(new Dimension(appWidth, appHeight));
+		//applicationFrame.setPreferredSize(new Dimension(appWidth, appHeight));
+		
+		
+		
+		
+		
+		applicationFrame.setPreferredSize(new Dimension(appWidth, appHeight));
+		applicationFrame.pack();
+
+		// This is not the actual-sized frame. get the actual size
+		Dimension actualSize = applicationFrame.getContentPane().getSize();
+
+		int extraW = appWidth - actualSize.width;
+		int extraH = appHeight - actualSize.height;
+
+		// Now set the size.
+		applicationFrame.setSize(appWidth + extraW, appHeight + extraH);
+		
+		System.out.println(extraW);
+		System.out.println(extraH);
+		
+		
+		
+		
+		//applicationFrame.pack();
 		applicationFrame.setVisible(true);
 		applicationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
