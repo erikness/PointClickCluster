@@ -118,4 +118,11 @@ public class Point
     {
         return pixelsFromGrid(this.gridX, this.gridY);
 	}
+	
+	public String toString()
+	{
+		Pair px = pixelsFromGrid(gridX, gridY);
+		return String.format("Point: on grid {%1$f, %2$f}, on the screen {%3$f, %4$f}",
+			gridX, gridY, px.x, px.y);
+	}
 }

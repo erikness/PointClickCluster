@@ -72,8 +72,12 @@ public class Main
         toolsPanel.setPreferredSize(new Dimension(toolsWidth, appHeight));
 
         GraphPanel graphPanel = new GraphPanel();
-		
 		graphPanel.addDataSet(ds);
+		
+        HighlightListener hl = new HighlightListener();
+        hl.setDataSets(graphPanel.getDataSets());
+        graphPanel.addMouseListener(hl);
+		
 		graphPanel.setPreferredSize(new Dimension(appWidth - toolsWidth, appHeight));
 		applicationFrame.getContentPane().add(BorderLayout.EAST, graphPanel);
 		

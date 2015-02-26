@@ -31,6 +31,13 @@ public class GraphPanel extends JPanel
 	{
 		datasets.add(ds);
 	}
+	
+	public List<DataSet> getDataSets()
+	{
+		// Useful to pass to other objects who need the current list of datasets at
+		// any given time.
+		return datasets;
+	}
 
 	private void paintAxes(Graphics g)
 	{
