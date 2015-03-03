@@ -76,7 +76,9 @@ public class Main
 		
         HighlightListener hl = new HighlightListener();
         hl.setDataSets(graphPanel.getDataSets());
+        hl.setParentComponent(graphPanel);  // Tight coupling; careful of this architecture
         graphPanel.addMouseListener(hl);
+        graphPanel.addMouseMotionListener(hl);
 		
 		graphPanel.setPreferredSize(new Dimension(appWidth - toolsWidth, appHeight));
 		applicationFrame.getContentPane().add(BorderLayout.EAST, graphPanel);

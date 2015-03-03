@@ -1,6 +1,6 @@
 package edu.nmsu;
 
-import javafx.util.Pair;
+import java.awt.Color;
 
 /**
  * Created by Erik Ness at 1/21/15 6:02 PM
@@ -21,6 +21,8 @@ public class Point
     public static double gridXMin;
     public static double gridYMax;
     public static double gridYMin;
+    
+    private Color background;
 
 	public static class Pair
 	{
@@ -103,7 +105,10 @@ public class Point
     private double gridX;
     private double gridY;
 
-    private Point() {}  // I may not want a regular constructor...
+    private Point() // I may not want a regular constructor...
+    { 
+    	background = Color.BLACK;
+    }
 
     /**
      * For context-free operations where you only need two numbers.
@@ -124,5 +129,15 @@ public class Point
 		Pair px = pixelsFromGrid(gridX, gridY);
 		return String.format("Point: on grid {%1$f, %2$f}, on the screen {%3$f, %4$f}",
 			gridX, gridY, px.x, px.y);
+	}
+	
+	public Color getColor()
+	{
+		return background;
+	}
+	
+	public void setColor(Color c)
+	{
+		background = c;
 	}
 }
