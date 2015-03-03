@@ -25,11 +25,6 @@ public class Main
 			Point.fromGrid(1, 1),
 			Point.fromGrid(2, 2),
 			Point.fromGrid(3, 4)));
-			
-		/*for (Point p : ds) {
-			System.out.println(p.asPixels().x);
-			System.out.println(p.asPixels().y);
-		}*/
 
 		JFrame applicationFrame = new JFrame();
 		//applicationFrame.setSize(new Dimension(appWidth, appHeight));
@@ -50,11 +45,6 @@ public class Main
 
 		// Now set the size.
 		applicationFrame.setSize(appWidth + extraW, appHeight + extraH);
-		
-		System.out.println(extraW);
-		System.out.println(extraH);
-		
-		
 		
 		
 		//applicationFrame.pack();
