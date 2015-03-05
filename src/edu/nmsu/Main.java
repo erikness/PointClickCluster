@@ -60,6 +60,11 @@ public class Main
 		JPanel toolsPanel = new ToolsPanel();
         applicationFrame.getContentPane().add(BorderLayout.CENTER, toolsPanel);
         toolsPanel.setPreferredSize(new Dimension(toolsWidth, appHeight));
+        
+        ColorSelectionListener csl = new ColorSelectionListener();
+        toolsPanel.addMouseListener(csl);
+        toolsPanel.addMouseMotionListener(csl);
+        csl.setParentComponent(toolsPanel);
 
         GraphPanel graphPanel = new GraphPanel();
 		graphPanel.addDataSet(ds);
