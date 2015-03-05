@@ -15,6 +15,7 @@ import java.awt.Color;
  */
 public class Point
 {
+	public static final int RADIUS = 8;
     public static int pixelWidth;
     public static int pixelHeight;
     public static double gridXMax;

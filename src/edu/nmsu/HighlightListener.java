@@ -72,11 +72,10 @@ public class HighlightListener implements MouseListener, MouseMotionListener
 	
 	private boolean withinBounds(Point.Pair clickedPixel, Point.Pair candidatePair)
 	{		
-		int radius = 4; // hardcoded for now
-		boolean xInBounds = candidatePair.x - radius <= clickedPixel.x && 
-							clickedPixel.x <= candidatePair.x + radius;
-		boolean yInBounds = candidatePair.y - radius <= clickedPixel.y && 
-							clickedPixel.y <= candidatePair.y + radius;
+		boolean xInBounds = candidatePair.x - Point.RADIUS <= clickedPixel.x && 
+							clickedPixel.x <= candidatePair.x + Point.RADIUS;
+		boolean yInBounds = candidatePair.y - Point.RADIUS <= clickedPixel.y && 
+							clickedPixel.y <= candidatePair.y + Point.RADIUS;
 							
 		return xInBounds && yInBounds;
 	}

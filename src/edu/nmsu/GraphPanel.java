@@ -58,14 +58,12 @@ public class GraphPanel extends JPanel
 	
 	private void paintDataSets(Graphics g)
 	{
-		int radius = 4; // hardcoded for now
-		
 		for (DataSet ds : datasets) {
 			for (Point p : ds) {
 				int x = (int) p.asPixels().x;
 				int y = (int) p.asPixels().y;
 				g.setColor(p.getColor());
-				g.fillRect(x - radius, y - radius, radius * 2, radius * 2);
+				g.fillRect(x - Point.RADIUS, y - Point.RADIUS, Point.RADIUS * 2, Point.RADIUS * 2);
 			}
 		}
 	} 
