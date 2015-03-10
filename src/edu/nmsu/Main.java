@@ -57,7 +57,7 @@ public class Main
 				screenSize.width / 2 - applicationFrame.getSize().width / 2,
 				screenSize.height / 2 - applicationFrame.getSize().height / 2);
 
-		JPanel toolsPanel = new ToolsPanel();
+		ToolsPanel toolsPanel = new ToolsPanel();
         applicationFrame.getContentPane().add(BorderLayout.CENTER, toolsPanel);
         toolsPanel.setPreferredSize(new Dimension(toolsWidth, appHeight));
         
@@ -72,6 +72,7 @@ public class Main
         HighlightListener hl = new HighlightListener();
         hl.setDataSets(graphPanel.getDataSets());
         hl.setParentComponent(graphPanel);  // Tight coupling; careful of this architecture
+        toolsPanel.addColorObserver(hl);
         graphPanel.addMouseListener(hl);
         graphPanel.addMouseMotionListener(hl);
 		

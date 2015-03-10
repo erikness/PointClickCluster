@@ -22,4 +22,10 @@ public class Area
 			pixelCoords.x >= left &&
 			pixelCoords.x <= right;
 	}
+	
+	public String toString()
+	{
+		return String.format("Area: vertical [%1$d, %2$d], horizontal [%3$d, %4$d]",
+			top, bottom, left, right);
+	}
 }

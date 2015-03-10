@@ -13,6 +13,7 @@ public class ToolsPanel extends JPanel
 {
 	private Color currentColor;
 	private List<Color> availableColors;
+	private List<ColorObserver> colorObservers;
 	
 	private int margin;
 	private int columns;
@@ -24,7 +25,7 @@ public class ToolsPanel extends JPanel
 		currentColor = Color.RED;
 		availableColors = Arrays.asList(Color.RED, Color.BLUE, Color.GREEN, 
 			Color.YELLOW, Color.MAGENTA, Color.ORANGE);
-			
+		colorObservers = new ArrayList<ColorObserver>();
 		margin = 20;
 		columns = 2;
 	}
@@ -42,12 +43,13 @@ public class ToolsPanel extends JPanel
 		// however, the width of the component is not set when the constructor is called.
 		// it IS set when paintComponent is called, which is pretty early on and before
 		// anything important happens.
-		int boxLength = this.getWidth() / 2 - margin;
+		boxLength = this.getWidth() / 2 - margin;
 		
 		int col = 0;
 		int row = 0;
 		
 		for (Color c : availableColors) {
+			// THIS IS WHERE WE FIX THE BLACK DEFAULT THING
 			g.setColor(c);
 			paintSingleBox(g, margin + col * boxLength, margin + row * boxLength,
 				boxLength, c == currentColor);
@@ -61,16 +63,25 @@ public class ToolsPanel extends JPanel
 		g.fillRect(x, y, length, length);
 		if (border) {
 			g.setColor(Color.BLACK);
-			g.drawLine(x, y, x + length, y);
-			g.drawLine(x + length, y, x + length, y + length);
-			g.drawLine(x + length, y + length, x, y + length);
-			g.drawLine(x, y + length, x, y);
+			g.drawLine(x, y, x + length, y);  // top
+			g.drawLine(x + length - 1, y, x + length - 1, y + length);  // right
+			g.drawLine(x + length, y + length - 1, x, y + length - 1);  // bottom
+			g.drawLine(x, y + length, x, y);  // right
 		}
 	}
 	
 	public void setSelectedColor(Color c)
 	{
 		currentColor = c;
+		for (ColorObserver observer : colorObservers) {
+			observer.colorUpdate(c);
+		}
+	}
+	
+	public void addColorObserver(ColorObserver obs)
+	{
+		colorObservers.add(obs);
+		obs.colorUpdate(currentColor);
 	}
 	
 	public int getMargin()
@@ -82,6 +93,11 @@ public class ToolsPanel extends JPanel
 	{
 		return columns;
 	}
+	
+	/*public Color getDefaultHighlightColor()
+	{
+		return defaultHighlightColor;
+	}*/
 	
 	public int getBoxLength()
 	{
@@ -97,7 +113,8 @@ public class ToolsPanel extends JPanel
 	
 	public Area getColorSelectionArea()
 	{
-		return new Area(margin, margin + (availableColors.size() + 1 / columns) * boxLength,
+		Area area = new Area(margin, margin + (availableColors.size() + 1 / columns) * boxLength,
 			margin, margin + boxLength * columns);
+		return area;
 	}
 }

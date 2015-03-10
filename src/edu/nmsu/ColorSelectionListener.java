@@ -1,5 +1,6 @@
 package edu.nmsu;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -10,11 +11,21 @@ public class ColorSelectionListener implements MouseListener, MouseMotionListene
 	private Component parentComponent;
 	public void mousePressed(MouseEvent e)
 	{
-		Area selectionArea = ((ToolsPanel) parentComponent).getColorSelectionArea();
+		ToolsPanel toolsPanel = ((ToolsPanel) parentComponent);
+		Area selectionArea = toolsPanel.getColorSelectionArea();
 		Point.Pair location = new Point.Pair(e.getX(), e.getY());
 		if (!selectionArea.withinBounds(location)) {
 			return;
 		}
+		
+		int boxLength = (selectionArea.right - selectionArea.left) / 
+			((ToolsPanel) parentComponent).getColumns();
+		int row = ((int) location.x - selectionArea.left) / boxLength;
+		int col = ((int) location.y - selectionArea.top) / boxLength;
+		int index = row + col * toolsPanel.getColumns();
+		Color pressedColor = toolsPanel.getAvailableColors().get(index);
+		toolsPanel.setSelectedColor(pressedColor);
+		toolsPanel.repaint();
 		// first, make sure it's in the selection area
 		// second, figure out which color is being clicked
 		// third, swap to that color

@@ -8,11 +8,12 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-public class HighlightListener implements MouseListener, MouseMotionListener
+public class HighlightListener implements MouseListener, MouseMotionListener, ColorObserver
 {
 	private List<DataSet> currentDataSets;
 	private Component parentComponent;
 	
+	private Color highlightColor;
 	private Cursor handCursor;
 	private Cursor defaultCursor;
 	
@@ -62,11 +63,7 @@ public class HighlightListener implements MouseListener, MouseMotionListener
 	
 	private void highlight(Point p)
 	{
-		if (p.getColor() == Color.BLACK) {
-			p.setColor(Color.RED);
-		} else {
-			p.setColor(Color.BLACK);
-		}
+		p.setColor(highlightColor);
 		parentComponent.repaint();
 	}
 	
@@ -88,6 +85,11 @@ public class HighlightListener implements MouseListener, MouseMotionListener
 	public void setParentComponent(Component comp)
 	{
 		parentComponent = comp;
+	}
+	
+	public void colorUpdate(Color c)
+	{
+		highlightColor = c;
 	}
 	
 	public void mouseDragged(MouseEvent e) {}
