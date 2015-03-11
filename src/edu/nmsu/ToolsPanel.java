@@ -63,10 +63,10 @@ public class ToolsPanel extends JPanel
 		g.fillRect(x, y, length, length);
 		if (border) {
 			g.setColor(Color.BLACK);
-			g.drawLine(x, y, x + length, y);  // top
-			g.drawLine(x + length - 1, y, x + length - 1, y + length);  // right
-			g.drawLine(x + length, y + length - 1, x, y + length - 1);  // bottom
-			g.drawLine(x, y + length, x, y);  // right
+			g.drawLine(x, y, x + length - 1, y);  // top
+			g.drawLine(x + length - 1, y, x + length - 1, y + length - 1);  // right
+			g.drawLine(x + length - 1, y + length - 1, x, y + length - 1);  // bottom
+			g.drawLine(x, y + length - 1, x, y);  // left
 		}
 	}
 	
