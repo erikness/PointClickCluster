@@ -22,9 +22,17 @@ public class ToolsPanel extends JPanel
 	public ToolsPanel()
 	{
 		super();
-		currentColor = Color.RED;
-		availableColors = Arrays.asList(Color.RED, Color.BLUE, Color.GREEN, 
-			Color.YELLOW, Color.MAGENTA, Color.ORANGE);
+		currentColor = Point.DEFAULT_COLOR;
+		availableColors = Arrays.asList(
+				new Color(181, 137,0), /* yellow */
+				new Color(203, 75, 22), // orange
+				new Color(220, 50, 47), // red
+				new Color(211, 54, 130), // magenta
+				new Color(108, 113, 196), // violet
+				new Color(38, 139, 210), // blue
+				new Color(42, 161, 152), // cyan
+				new Color(133, 153, 0) // green
+		);
 		colorObservers = new ArrayList<ColorObserver>();
 		margin = 20;
 		columns = 2;
@@ -32,7 +40,7 @@ public class ToolsPanel extends JPanel
 	
 	public void paintComponent(Graphics g)
 	{
-		g.setColor(Color.ORANGE);
+		g.setColor(new Color(238, 232, 213));
 		g.fillRect(0, 0, 600, 500);
 		paintColoringBoxes(g);
 	}

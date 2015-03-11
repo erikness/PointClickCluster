@@ -15,6 +15,7 @@ import java.awt.Color;
  */
 public class Point
 {
+	public static Color DEFAULT_COLOR = Color.RED;
 	public static final int RADIUS = 8;
     public static int pixelWidth;
     public static int pixelHeight;
@@ -108,7 +109,7 @@ public class Point
 
     private Point() // I may not want a regular constructor...
     { 
-    	background = Color.BLACK;
+    	background = DEFAULT_COLOR;
     }
 
     /**
