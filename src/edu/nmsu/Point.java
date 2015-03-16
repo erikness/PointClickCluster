@@ -15,7 +15,7 @@ import java.awt.Color;
  */
 public class Point
 {
-	public static Color DEFAULT_COLOR = new Color(203, 75, 22);
+	public static Color DEFAULT_COLOR = new Color(166, 61, 18);
 	public static final int RADIUS = 8;
     public static int pixelWidth;
     public static int pixelHeight;

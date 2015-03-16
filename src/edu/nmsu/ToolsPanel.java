@@ -23,14 +23,24 @@ public class ToolsPanel extends JPanel
 	{
 		super();
 		currentColor = Point.DEFAULT_COLOR;
+		
 		availableColors = Arrays.asList(
+				new Color(166, 61, 18), // orange v
+				new Color(129, 135, 235), // violet ^
+				new Color(31, 113, 171), // blue v
+				new Color(166, 191, 0), // green ^
+				new Color(250, 64, 154), // magenta ^
+				new Color(32, 122, 116) // cyan v
+		);
+		// Pastel colors, original
+		/*availableColors = Arrays.asList(
 				new Color(203, 75, 22), // orange
 				new Color(108, 113, 196), // violet
 				new Color(38, 139, 210), // blue
 				new Color(133, 153, 0), // green
 				new Color(211, 54, 130), // magenta
 				new Color(42, 161, 152) // cyan
-		);
+		);*/
 		colorObservers = new ArrayList<ColorObserver>();
 		margin = 20;
 		columns = 2;
