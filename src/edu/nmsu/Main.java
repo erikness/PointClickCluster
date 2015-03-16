@@ -9,7 +9,7 @@ public class Main
 {
     public static void main(String[] args)
 	{
-		int appHeight = 500;
+		int appHeight = 700;
 		int toolsWidth = 100;
 		int appWidth = appHeight + toolsWidth;
 		
@@ -77,6 +77,7 @@ public class Main
 		graphPanel.setPreferredSize(new Dimension(appWidth - toolsWidth, appHeight));
 		applicationFrame.getContentPane().add(BorderLayout.EAST, graphPanel);
 		
+		applicationFrame.setResizable(false);
 		applicationFrame.setVisible(true);
 		applicationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		

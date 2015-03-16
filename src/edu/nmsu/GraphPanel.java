@@ -21,7 +21,7 @@ public class GraphPanel extends JPanel
 	public void paintComponent(Graphics g)
 	{
 		g.setColor(new Color(253, 246, 227));
-		g.fillRect(0, 0, 500, 600);
+		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
 		paintAxes(g);
 		paintDataSets(g);

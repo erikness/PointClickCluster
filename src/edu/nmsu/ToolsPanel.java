@@ -39,7 +39,7 @@ public class ToolsPanel extends JPanel
 	public void paintComponent(Graphics g)
 	{
 		g.setColor(new Color(238, 232, 213));
-		g.fillRect(0, 0, 600, 500);
+		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		paintColoringBoxes(g);
 	}
 	
