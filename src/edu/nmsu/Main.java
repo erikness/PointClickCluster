@@ -48,8 +48,6 @@ public class Main
 		
 		
 		//applicationFrame.pack();
-		applicationFrame.setVisible(true);
-		applicationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		/* Put the application in the center of the screen */
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -79,6 +77,8 @@ public class Main
 		graphPanel.setPreferredSize(new Dimension(appWidth - toolsWidth, appHeight));
 		applicationFrame.getContentPane().add(BorderLayout.EAST, graphPanel);
 		
+		applicationFrame.setVisible(true);
+		applicationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
 }
