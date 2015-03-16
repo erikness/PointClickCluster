@@ -119,7 +119,7 @@ public class ToolsPanel extends JPanel
 	
 	public Area getColorSelectionArea()
 	{
-		Area area = new Area(margin, margin + (availableColors.size() + 1 / columns) * boxLength,
+		Area area = new Area(margin, margin + ((availableColors.size() + 1) / columns) * boxLength,
 			margin, margin + boxLength * columns);
 		return area;
 	}
