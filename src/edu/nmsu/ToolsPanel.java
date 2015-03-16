@@ -51,6 +51,7 @@ public class ToolsPanel extends JPanel
 		g.setColor(new Color(238, 232, 213));
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		paintColoringBoxes(g);
+		paintGrader(g);
 	}
 	
 	public void paintColoringBoxes(Graphics g)
@@ -72,6 +73,16 @@ public class ToolsPanel extends JPanel
 			col = (col + 1) % columns;
 			if (col == 0) row++;
 		}
+	}
+	
+	public void paintGrader(Graphics g)
+	{
+		int rectWidth = this.getWidth() - 2 * margin;
+		int rectHeight = 400; // make more dynamic later
+		
+		g.setColor(Color.BLACK);
+		g.fillRect(margin, this.getHeight() - margin - rectHeight,
+			rectWidth, rectHeight);
 	}
 	
 	public void paintSingleBox(Graphics g, int x, int y, int length, boolean border)
