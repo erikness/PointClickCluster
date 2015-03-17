@@ -15,6 +15,8 @@ public class ToolsPanel extends JPanel
 	private Color currentColor;
 	private List<Color> availableColors;
 	private List<ColorObserver> colorObservers;
+
+	private double currentScore; // ranges from 0 to 1
 	
 	private int margin;
 	private int columns;
@@ -24,6 +26,7 @@ public class ToolsPanel extends JPanel
 	{
 		super();
 		currentColor = Point.DEFAULT_COLOR;
+		currentScore = 0;
 		
 		availableColors = Arrays.asList(
 				new Color(166, 61, 18), // orange v
@@ -88,6 +91,24 @@ public class ToolsPanel extends JPanel
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setPaint(redToGreen);
 		g2.fill(new Rectangle.Double(x, y, rectWidth, rectHeight));
+
+
+		paintTriangle(g, (int) (y + rectHeight * (1 - currentScore)));
+	}
+
+	public void paintTriangle(Graphics g, int verticalOffset)
+	{
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setPaint(Color.BLACK);
+
+		int height = 50;
+		int yOffset = verticalOffset - height / 2;
+		// how much the point sticks out - pi / 6 is based on the equilateral triangle
+		int xOut = (int) (this.getWidth() - (Math.sqrt(3) * height / 2));
+		int[] xs = new int[]{this.getWidth(), xOut, this.getWidth()};
+		int[] ys = new int[]{yOffset, yOffset + height / 2, yOffset + height};
+
+		g2.fill(new Polygon(xs, ys, 3));
 	}
 	
 	public void paintSingleBox(Graphics g, int x, int y, int length, boolean border)
