@@ -21,10 +21,12 @@ public class Main
 		Point.gridYMax = 5;
 		Point.gridYMin = -5;
 		
-        DataSet ds = new DataSet(Lists.newArrayList(
+        /*DataSet ds = new DataSet(Lists.newArrayList(
 			Point.fromGrid(1, 1),
 			Point.fromGrid(2, 2),
-			Point.fromGrid(3, 4)));
+			Point.fromGrid(3, 4)));*/
+
+		DataSet ds = DataSet.fromFile("A:/Erik/Documents/PointClickCluster/datasets/1.txt");
 
 		JFrame applicationFrame = new JFrame();
 		//applicationFrame.setSize(new Dimension(appWidth, appHeight));
