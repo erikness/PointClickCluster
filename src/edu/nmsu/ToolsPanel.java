@@ -1,5 +1,6 @@
 package edu.nmsu;
 
+import java.awt.geom.Ellipse2D;
 import java.util.List;
 import java.util.ArrayList;
 import java.awt.*;
@@ -79,10 +80,14 @@ public class ToolsPanel extends JPanel
 	{
 		int rectWidth = this.getWidth() - 2 * margin;
 		int rectHeight = 400; // make more dynamic later
-		
-		g.setColor(Color.BLACK);
-		g.fillRect(margin, this.getHeight() - margin - rectHeight,
-			rectWidth, rectHeight);
+		int x = margin;
+		int y = this.getHeight() - margin - rectHeight;
+
+		Paint redToGreen = new LinearGradientPaint(x, y, x + rectWidth, y + rectHeight,
+			new float[]{0f, 0.5f, 1f}, new Color[]{Color.GREEN, Color.YELLOW, Color.RED});
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setPaint(redToGreen);
+		g2.fill(new Rectangle.Double(x, y, rectWidth, rectHeight));
 	}
 	
 	public void paintSingleBox(Graphics g, int x, int y, int length, boolean border)
