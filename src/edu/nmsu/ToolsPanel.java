@@ -69,7 +69,7 @@ public class ToolsPanel extends JPanel
 			// THIS IS WHERE WE FIX THE BLACK DEFAULT THING
 			g.setColor(c);
 			paintSingleBox(g, margin + col * boxLength, margin + row * boxLength,
-				boxLength, c == currentColor);
+					boxLength, c.equals(currentColor));
 			col = (col + 1) % columns;
 			if (col == 0) row++;
 		}
