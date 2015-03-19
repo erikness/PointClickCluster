@@ -1,10 +1,17 @@
 package edu.nmsu;
 
+import com.google.common.collect.Maps;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 import java.util.List;
 import java.util.ArrayList;
 import java.awt.*;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.swing.*;
 
 /**
@@ -12,9 +19,13 @@ import javax.swing.*;
  */
 public class ToolsPanel extends JPanel
 {
+	public GraphPanel graphPanel; // fuck your fascist coupling standards
+
 	private Color currentColor;
 	private List<Color> availableColors;
 	private List<ColorObserver> colorObservers;
+
+	private JButton scoreButton;
 
 	private double currentScore; // ranges from 0 to 1
 	
@@ -48,6 +59,25 @@ public class ToolsPanel extends JPanel
 		colorObservers = new ArrayList<ColorObserver>();
 		margin = 20;
 		columns = 2;
+		scoreButton = new JButton("Score");
+		scoreButton.setFocusPainted(false);
+
+		ToolsPanel thisTmp = this;  // because "this" in the anonymous function is something else entirely
+		scoreButton.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				DataSet ds = graphPanel.getCurrentDataSet();
+				Map<Color, List<Point>> clustersTmp =
+						ds.stream().collect(Collectors.groupingBy(Point::getColor));
+				Map<Color, DataSet> clusters = Maps.transformValues(clustersTmp, lst -> new DataSet(lst));
+				double score = DataSet.score(clusters.values());
+				currentScore = score;
+				thisTmp.repaint();
+			}
+		});
+		this.add(scoreButton);
 	}
 	
 	public void paintComponent(Graphics g)
@@ -94,6 +124,15 @@ public class ToolsPanel extends JPanel
 
 
 		paintTriangle(g, (int) (y + rectHeight * (1 - currentScore)));
+		paintButton(g, x, y, rectWidth, rectHeight);
+	}
+
+	public void paintButton(Graphics g, int graderX, int graderY, int graderWidth, int graderHeight)
+	{
+		scoreButton.setPreferredSize(new Dimension(graderWidth, 35));
+		((FlowLayout) this.getLayout()).setVgap(graderY - scoreButton.getHeight() - margin);
+		((FlowLayout) this.getLayout()).setHgap(graderX);
+		this.revalidate();
 	}
 
 	public void paintTriangle(Graphics g, int verticalOffset)

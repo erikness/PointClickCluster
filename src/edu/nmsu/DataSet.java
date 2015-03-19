@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Created by Erik Ness at 1/21/15 5:55 PM
@@ -99,6 +100,10 @@ public class DataSet implements Iterable<Point>
 			withinClusterErrors.add(sumOfSquares(clust));
 		}
 
+		System.out.println(withinClusterErrors);
+		System.out.println(withinClusterErrors.stream().mapToDouble(Double::doubleValue).sum());
+		System.out.println(betweenClusterError);
+
 		// now how do we come up with a score based on these? HMMMMMMMMMM
 		return 0.5;
 	}
@@ -117,6 +122,11 @@ public class DataSet implements Iterable<Point>
 		}
 
 		return errorSum;
+	}
+
+	public Stream<Point> stream()
+	{
+		return points.stream();
 	}
 
 }

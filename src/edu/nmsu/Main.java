@@ -68,6 +68,8 @@ public class Main
 
         GraphPanel graphPanel = new GraphPanel();
 		graphPanel.addDataSet(ds);
+
+		toolsPanel.graphPanel = graphPanel;
 		
         HighlightListener hl = new HighlightListener();
         hl.setDataSets(graphPanel.getDataSets());

@@ -11,6 +11,7 @@ import javax.swing.*;
 public class GraphPanel extends JPanel
 {
 	private List<DataSet> datasets;
+	private DataSet currentDataSet;
 	
 	public GraphPanel()
 	{	
@@ -30,6 +31,9 @@ public class GraphPanel extends JPanel
 	public void addDataSet(DataSet ds)
 	{
 		datasets.add(ds);
+		if (currentDataSet == null) {
+			currentDataSet = ds;
+		}
 	}
 	
 	public List<DataSet> getDataSets()
@@ -58,13 +62,16 @@ public class GraphPanel extends JPanel
 	
 	private void paintDataSets(Graphics g)
 	{
-		for (DataSet ds : datasets) {
-			for (Point p : ds) {
-				int x = (int) p.asPixels().x;
-				int y = (int) p.asPixels().y;
-				g.setColor(p.getColor());
-				g.fillRect(x - Point.RADIUS, y - Point.RADIUS, Point.RADIUS * 2, Point.RADIUS * 2);
-			}
+		for (Point p : currentDataSet) {
+			int x = (int) p.asPixels().x;
+			int y = (int) p.asPixels().y;
+			g.setColor(p.getColor());
+			g.fillRect(x - Point.RADIUS, y - Point.RADIUS, Point.RADIUS * 2, Point.RADIUS * 2);
 		}
-	} 
+	}
+
+	public DataSet getCurrentDataSet()
+	{
+		return currentDataSet;
+	}
 }
