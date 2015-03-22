@@ -20,42 +20,16 @@ public class Main
 		Point.gridXMin = -5;
 		Point.gridYMax = 5;
 		Point.gridYMin = -5;
-		
-        /*DataSet ds = new DataSet(Lists.newArrayList(
-			Point.fromGrid(1, 1),
-			Point.fromGrid(2, 2),
-			Point.fromGrid(3, 4)));*/
 
 		DataSet ds = DataSet.fromFile("A:/Erik/Documents/PointClickCluster/datasets/1.txt");
 
 		JFrame applicationFrame = new JFrame();
-		//applicationFrame.setSize(new Dimension(appWidth, appHeight));
-		//applicationFrame.setPreferredSize(new Dimension(appWidth, appHeight));
-		
-		
-		
-		
-		
 		applicationFrame.setPreferredSize(new Dimension(appWidth, appHeight));
 		applicationFrame.pack();
 
-		// This is not the actual-sized frame. get the actual size
-		Dimension actualSize = applicationFrame.getContentPane().getSize();
+		adjustSize(applicationFrame, appWidth, appHeight);
 
-		int extraW = appWidth - actualSize.width;
-		int extraH = appHeight - actualSize.height;
-
-		// Now set the size.
-		applicationFrame.setSize(appWidth + extraW, appHeight + extraH);
-		
-		
-		//applicationFrame.pack();
-
-		/* Put the application in the center of the screen */
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		applicationFrame.setLocation(
-				screenSize.width / 2 - applicationFrame.getSize().width / 2,
-				screenSize.height / 2 - applicationFrame.getSize().height / 2);
+		centerWindow(applicationFrame);
 
 		ToolsPanel toolsPanel = new ToolsPanel();
         applicationFrame.getContentPane().add(BorderLayout.CENTER, toolsPanel);
@@ -85,5 +59,26 @@ public class Main
 		applicationFrame.setVisible(true);
 		applicationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+	}
+
+	private static void adjustSize(JFrame frame, int intendedWidth, int intendedHeight)
+	{
+		// We "set" the size initially, but JFrame doesn't entirely agree and includes things like the border
+		// in the size. So we let it render invisibly, and resize based on that.
+		Dimension actualSize = frame.getContentPane().getSize();
+
+		int extraW = intendedWidth - actualSize.width;
+		int extraH = intendedHeight - actualSize.height;
+
+		// Now set the size.
+		frame.setSize(intendedWidth + extraW, intendedHeight + extraH);
+	}
+
+	private static void centerWindow(JFrame frame)
+	{
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		frame.setLocation(
+				screenSize.width / 2 - frame.getSize().width / 2,
+				screenSize.height / 2 - frame.getSize().height / 2);
 	}
 }
