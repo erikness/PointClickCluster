@@ -1,7 +1,13 @@
 package edu.nmsu;
 
+import javax.smartcardio.Card;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.lang.reflect.Field;
+import java.util.Vector;
 
 import com.google.common.collect.Lists;
 
@@ -43,6 +49,9 @@ public class Main
         GraphPanel graphPanel = new GraphPanel();
 		graphPanel.addDataSet(ds);
 
+		MetaGraphPanel metaGraphPanel = new MetaGraphPanel();
+		metaGraphPanel.addGraphPanel(graphPanel);
+
 		toolsPanel.graphPanel = graphPanel;
 		
         HighlightListener hl = new HighlightListener();
@@ -53,8 +62,9 @@ public class Main
         graphPanel.addMouseMotionListener(hl);
 		
 		graphPanel.setPreferredSize(new Dimension(appWidth - toolsWidth, appHeight));
-		applicationFrame.getContentPane().add(BorderLayout.EAST, graphPanel);
-		
+		metaGraphPanel.setPreferredSize(new Dimension(appWidth - toolsWidth, appHeight));
+		applicationFrame.getContentPane().add(BorderLayout.EAST, metaGraphPanel);
+
 		applicationFrame.setResizable(false);
 		applicationFrame.setVisible(true);
 		applicationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
