@@ -19,13 +19,21 @@ import javax.swing.*;
  */
 public class ToolsPanel extends JPanel
 {
+	public MetaGraphPanel metaGraphPanel;
 	public GraphPanel graphPanel; // fuck your fascist coupling standards
+
+	private int RECT_HEIGHT = 400;
+	private boolean hasRendered = false;
 
 	private Color currentColor;
 	private List<Color> availableColors;
 	private List<ColorObserver> colorObservers;
 
+	private Box prevNextBox;
+	private Box scoreBox;
 	private JButton scoreButton;
+	private JButton prevButton;
+	private JButton nextButton;
 
 	private double currentScore; // ranges from 0 to 1
 	
@@ -36,6 +44,7 @@ public class ToolsPanel extends JPanel
 	public ToolsPanel()
 	{
 		super();
+		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		currentColor = Point.DEFAULT_COLOR;
 		currentScore = 0;
 		
@@ -60,7 +69,11 @@ public class ToolsPanel extends JPanel
 		margin = 20;
 		columns = 2;
 		scoreButton = new JButton("Score");
+		prevButton = new JButton("\u25C0");
+		nextButton = new JButton("\u25B6");
 		scoreButton.setFocusPainted(false);
+		prevButton.setFocusPainted(false);
+		nextButton.setFocusPainted(false);
 
 		ToolsPanel thisTmp = this;  // because "this" in the anonymous function is something else entirely
 		scoreButton.addActionListener(new ActionListener()
@@ -68,7 +81,7 @@ public class ToolsPanel extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				DataSet ds = graphPanel.getCurrentDataSet();
+				DataSet ds = metaGraphPanel.getCurrentGraphPanel().getDataSet();
 				Map<Color, List<Point>> clustersTmp =
 						ds.stream().collect(Collectors.groupingBy(Point::getColor));
 				Map<Color, DataSet> clusters = Maps.transformValues(clustersTmp, lst -> new DataSet(lst));
@@ -77,7 +90,8 @@ public class ToolsPanel extends JPanel
 				thisTmp.repaint();
 			}
 		});
-		this.add(scoreButton);
+
+
 	}
 	
 	public void paintComponent(Graphics g)
@@ -86,9 +100,44 @@ public class ToolsPanel extends JPanel
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		paintColoringBoxes(g);
 		paintGrader(g);
+		if (!hasRendered) {
+			hasRendered = true;
+			setButtonPositions(g);
+			addButtonListeners(g);
+		}
+	}
+
+	private void setButtonPositions(Graphics g)
+	{
+		int prevNextLeftMargin = (int) (this.getWidth() / 2 - prevButton.getPreferredSize().getWidth());
+		prevNextBox = new Box(BoxLayout.X_AXIS);
+		prevNextBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+		prevNextBox.add(Box.createRigidArea(new Dimension(prevNextLeftMargin, 0)));
+		prevNextBox.add(prevButton);
+		prevNextBox.add(nextButton);
+
+		scoreBox = new Box(BoxLayout.X_AXIS);
+		scoreBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+		int scoreLeftMargin = (int) (this.getWidth() - scoreButton.getPreferredSize().getWidth()) / 2;
+		scoreBox.add(Box.createRigidArea(new Dimension(scoreLeftMargin, 0)));
+		scoreBox.add(scoreButton);
+
+		int buttonHeight = (int) scoreButton.getPreferredSize().getHeight();
+		double y = this.getHeight() - 2 * margin - RECT_HEIGHT - 2 * buttonHeight;
+		this.add(Box.createRigidArea(new Dimension(0, (int) y)));
+		this.add(prevNextBox);
+		this.add(Box.createRigidArea(new Dimension(0, 1)));
+		this.add(scoreBox);
+		this.revalidate();
+	}
+
+	private void addButtonListeners(Graphics g)
+	{
+		prevButton.addActionListener(new FlipListener(FlipListener.PREV, metaGraphPanel));
+		nextButton.addActionListener(new FlipListener(FlipListener.NEXT, metaGraphPanel));
 	}
 	
-	public void paintColoringBoxes(Graphics g)
+	private void paintColoringBoxes(Graphics g)
 	{
 		// setting an instance variable in somewhere other than the constructor is dangeous;
 		// however, the width of the component is not set when the constructor is called.
@@ -109,10 +158,10 @@ public class ToolsPanel extends JPanel
 		}
 	}
 	
-	public void paintGrader(Graphics g)
+	private void paintGrader(Graphics g)
 	{
 		int rectWidth = this.getWidth() - 2 * margin;
-		int rectHeight = 400; // make more dynamic later
+		int rectHeight = RECT_HEIGHT; // make more dynamic later
 		int x = margin;
 		int y = this.getHeight() - margin - rectHeight;
 
@@ -124,18 +173,25 @@ public class ToolsPanel extends JPanel
 
 
 		paintTriangle(g, (int) (y + rectHeight * (1 - currentScore)));
-		paintButton(g, x, y, rectWidth, rectHeight);
 	}
 
-	public void paintButton(Graphics g, int graderX, int graderY, int graderWidth, int graderHeight)
+	private void drawSubmitButton(Graphics g, int graderX, int graderY, int graderWidth, int graderHeight)
 	{
 		scoreButton.setPreferredSize(new Dimension(graderWidth, 35));
-		((FlowLayout) this.getLayout()).setVgap(graderY - scoreButton.getHeight() - margin);
+//		((FlowLayout) this.getLayout()).setVgap(graderY - scoreButton.getHeight() - margin);
+//		((FlowLayout) this.getLayout()).setHgap(graderX);
+		this.revalidate();
+	}
+
+	private void drawPrevButton(Graphics g, int graderX, int graderY, int graderWidth, int graderHeight)
+	{
+		prevButton.setPreferredSize(new Dimension(graderWidth, 35));
+		((FlowLayout) this.getLayout()).setVgap(graderY - prevButton.getHeight() - margin);
 		((FlowLayout) this.getLayout()).setHgap(graderX);
 		this.revalidate();
 	}
 
-	public void paintTriangle(Graphics g, int verticalOffset)
+	private void paintTriangle(Graphics g, int verticalOffset)
 	{
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setPaint(Color.BLACK);
@@ -150,7 +206,7 @@ public class ToolsPanel extends JPanel
 		g2.fill(new Polygon(xs, ys, 3));
 	}
 	
-	public void paintSingleBox(Graphics g, int x, int y, int length, boolean border)
+	private void paintSingleBox(Graphics g, int x, int y, int length, boolean border)
 	{
 		g.fillRect(x, y, length, length);
 		if (border) {
@@ -185,12 +241,7 @@ public class ToolsPanel extends JPanel
 	{
 		return columns;
 	}
-	
-	/*public Color getDefaultHighlightColor()
-	{
-		return defaultHighlightColor;
-	}*/
-	
+
 	public int getBoxLength()
 	{
 		return boxLength;

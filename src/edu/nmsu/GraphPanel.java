@@ -12,13 +12,11 @@ import javax.swing.*;
  */
 public class GraphPanel extends JPanel
 {
-	private List<DataSet> datasets;
-	private DataSet currentDataSet;
+	private DataSet dataset;
 	
 	public GraphPanel()
 	{	
 		super();
-		datasets = new ArrayList<DataSet>();
 	}
 	
 	public void paintComponent(Graphics g)
@@ -30,19 +28,14 @@ public class GraphPanel extends JPanel
 		paintDataSets(g);
 	}
 	
-	public void addDataSet(DataSet ds)
+	public void setDataSet(DataSet ds)
 	{
-		datasets.add(ds);
-		if (currentDataSet == null) {
-			currentDataSet = ds;
-		}
+		dataset = ds;
 	}
 	
-	public List<DataSet> getDataSets()
+	public DataSet getDataSet()
 	{
-		// Useful to pass to other objects who need the current list of datasets at
-		// any given time.
-		return datasets;
+		return dataset;
 	}
 
 	private void paintAxes(Graphics g)
@@ -64,16 +57,11 @@ public class GraphPanel extends JPanel
 	
 	private void paintDataSets(Graphics g)
 	{
-		for (Point p : currentDataSet) {
+		for (Point p : dataset) {
 			int x = (int) p.asPixels().x;
 			int y = (int) p.asPixels().y;
 			g.setColor(p.getColor());
 			g.fillRect(x - Point.RADIUS, y - Point.RADIUS, Point.RADIUS * 2, Point.RADIUS * 2);
 		}
-	}
-
-	public DataSet getCurrentDataSet()
-	{
-		return currentDataSet;
 	}
 }

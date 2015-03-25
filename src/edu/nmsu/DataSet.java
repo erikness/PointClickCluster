@@ -52,13 +52,18 @@ public class DataSet implements Iterable<Point>
         return Point.fromGrid(xTotal / this.size(), yTotal / this.size());
 	}
 
+	public static DataSet fromFile(File f)
+	{
+		return fromFile(f.getPath());
+	}
+
 	public static DataSet fromFile(String path)
 	{
 		byte[] encoded;
 		try {
 			encoded = Files.readAllBytes(Paths.get(path));
 		} catch (IOException ex) {
-			throw new RuntimeException("Gotta have a valid dataset!", ex);
+			throw new RuntimeException("Gotta have a valid dataset! " + path, ex);
 		}
 
 		String contents = new String(encoded, StandardCharsets.US_ASCII);

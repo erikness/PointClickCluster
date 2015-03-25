@@ -10,7 +10,7 @@ import java.util.List;
 
 public class HighlightListener implements MouseListener, MouseMotionListener, ColorObserver
 {
-	private List<DataSet> currentDataSets;
+	private DataSet currentDataSet;
 	private Component parentComponent;
 	
 	private Color highlightColor;
@@ -30,11 +30,9 @@ public class HighlightListener implements MouseListener, MouseMotionListener, Co
 		// On what data point (if any)?
 		// I guess we gotta loop...note if two points are overlapping, the one
 		// in the dataset that was added first will be chosen.
-		for (DataSet ds : currentDataSets) {
-			for (Point p : ds) {
-				if (withinBounds(clickedPosition, p.asPixels())) {
-					highlight(p);
-				}
+		for (Point p : currentDataSet) {
+			if (withinBounds(clickedPosition, p.asPixels())) {
+				highlight(p);
 			}
 		}
 	}
@@ -46,13 +44,11 @@ public class HighlightListener implements MouseListener, MouseMotionListener, Co
 		Point.Pair clickedPosition = new Point.Pair(e.getX(), e.getY());
 		
 		boolean cursorChanged = false;
-		
-		for (DataSet ds : currentDataSets) {
-			for (Point p : ds) {
-				if (withinBounds(clickedPosition, p.asPixels())) {
-					parentComponent.setCursor(handCursor);
-					cursorChanged = true;
-				}
+
+		for (Point p : currentDataSet) {
+			if (withinBounds(clickedPosition, p.asPixels())) {
+				parentComponent.setCursor(handCursor);
+				cursorChanged = true;
 			}
 		}
 		
@@ -77,9 +73,9 @@ public class HighlightListener implements MouseListener, MouseMotionListener, Co
 		return xInBounds && yInBounds;
 	}
 		
-	public void setDataSets(List<DataSet> sets)
+	public void setDataSet(DataSet set)
 	{
-		currentDataSets = sets;
+		currentDataSet = set;
 	}
 	
 	public void setParentComponent(Component comp)

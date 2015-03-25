@@ -1,11 +1,12 @@
 package edu.nmsu;
 
-import javax.smartcardio.Card;
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Vector;
 
@@ -27,7 +28,12 @@ public class Main
 		Point.gridYMax = 5;
 		Point.gridYMin = -5;
 
-		DataSet ds = DataSet.fromFile("A:/Erik/Documents/PointClickCluster/datasets/1.txt");
+		String dataSetDirectory = "A:/Erik/Documents/PointClickCluster/datasets/";
+		List<DataSet> loadedDataSets = Lists.newArrayList();
+		for (File f : new File(dataSetDirectory).listFiles()) {
+			loadedDataSets.add(DataSet.fromFile(f));
+		}
+		//DataSet ds = DataSet.fromFile("A:/Erik/Documents/PointClickCluster/datasets/2.txt");
 
 		JFrame applicationFrame = new JFrame();
 		applicationFrame.setPreferredSize(new Dimension(appWidth, appHeight));
@@ -46,22 +52,24 @@ public class Main
         toolsPanel.addMouseMotionListener(csl);
         csl.setParentComponent(toolsPanel);
 
-        GraphPanel graphPanel = new GraphPanel();
-		graphPanel.addDataSet(ds);
-
 		MetaGraphPanel metaGraphPanel = new MetaGraphPanel();
-		metaGraphPanel.addGraphPanel(graphPanel);
+		for (DataSet ds : loadedDataSets) {
+			GraphPanel graphPanel = new GraphPanel();
+			graphPanel.setPreferredSize(new Dimension(appWidth - toolsWidth, appHeight));
+			graphPanel.setDataSet(ds);
 
-		toolsPanel.graphPanel = graphPanel;
-		
-        HighlightListener hl = new HighlightListener();
-        hl.setDataSets(graphPanel.getDataSets());
-        hl.setParentComponent(graphPanel);  // Tight coupling; careful of this architecture
-        toolsPanel.addColorObserver(hl);
-        graphPanel.addMouseListener(hl);
-        graphPanel.addMouseMotionListener(hl);
-		
-		graphPanel.setPreferredSize(new Dimension(appWidth - toolsWidth, appHeight));
+			HighlightListener hl = new HighlightListener();
+			hl.setDataSet(graphPanel.getDataSet());
+			hl.setParentComponent(graphPanel);  // Tight coupling; careful of this architecture
+			toolsPanel.addColorObserver(hl);
+			graphPanel.addMouseListener(hl);
+			graphPanel.addMouseMotionListener(hl);
+
+			metaGraphPanel.addGraphPanel(graphPanel);
+		}
+
+		toolsPanel.metaGraphPanel = metaGraphPanel;
+
 		metaGraphPanel.setPreferredSize(new Dimension(appWidth - toolsWidth, appHeight));
 		applicationFrame.getContentPane().add(BorderLayout.EAST, metaGraphPanel);
 
