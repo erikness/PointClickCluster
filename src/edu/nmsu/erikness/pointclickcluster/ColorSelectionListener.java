@@ -1,4 +1,7 @@
-package edu.nmsu;
+package edu.nmsu.erikness.pointclickcluster;
+
+import edu.nmsu.erikness.miningcommon.Area;
+import edu.nmsu.erikness.miningcommon.Point;
 
 import java.awt.Color;
 import java.awt.Component;

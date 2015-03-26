@@ -1,4 +1,4 @@
-package edu.nmsu;
+package edu.nmsu.erikness.pointclickcluster;
 
 import java.awt.Color;
 

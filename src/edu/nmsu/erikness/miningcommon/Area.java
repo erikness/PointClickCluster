@@ -1,4 +1,6 @@
-package edu.nmsu;
+package edu.nmsu.erikness.miningcommon;
+
+import edu.nmsu.erikness.miningcommon.Point;
 
 public class Area
 {

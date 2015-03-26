@@ -1,4 +1,4 @@
-package edu.nmsu;
+package edu.nmsu.erikness.miningcommon;
 
 import java.awt.Color;
 

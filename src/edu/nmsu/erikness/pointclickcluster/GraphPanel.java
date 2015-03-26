@@ -1,9 +1,7 @@
-package edu.nmsu;
+package edu.nmsu.erikness.pointclickcluster;
 
-import com.google.common.hash.HashCode;
+import edu.nmsu.erikness.miningcommon.DataSet;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.awt.*;
 import javax.swing.*;
 
@@ -57,11 +55,11 @@ public class GraphPanel extends JPanel
 	
 	private void paintDataSets(Graphics g)
 	{
-		for (Point p : dataset) {
+		for (edu.nmsu.erikness.miningcommon.Point p : dataset) {
 			int x = (int) p.asPixels().x;
 			int y = (int) p.asPixels().y;
 			g.setColor(p.getColor());
-			g.fillRect(x - Point.RADIUS, y - Point.RADIUS, Point.RADIUS * 2, Point.RADIUS * 2);
+			g.fillRect(x - edu.nmsu.erikness.miningcommon.Point.RADIUS, y - edu.nmsu.erikness.miningcommon.Point.RADIUS, edu.nmsu.erikness.miningcommon.Point.RADIUS * 2, edu.nmsu.erikness.miningcommon.Point.RADIUS * 2);
 		}
 	}
 }

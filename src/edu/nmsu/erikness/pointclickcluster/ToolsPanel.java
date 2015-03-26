@@ -1,16 +1,17 @@
-package edu.nmsu;
+package edu.nmsu.erikness.pointclickcluster;
 
 import com.google.common.collect.Maps;
+import edu.nmsu.erikness.miningcommon.Area;
+import edu.nmsu.erikness.miningcommon.DataSet;
+import edu.nmsu.erikness.miningcommon.Point;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Ellipse2D;
 import java.util.List;
 import java.util.ArrayList;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.swing.*;
 
@@ -45,7 +46,7 @@ public class ToolsPanel extends JPanel
 	{
 		super();
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		currentColor = Point.DEFAULT_COLOR;
+		currentColor = edu.nmsu.erikness.miningcommon.Point.DEFAULT_COLOR;
 		currentScore = 0;
 		
 		availableColors = Arrays.asList(

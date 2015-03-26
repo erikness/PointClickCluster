@@ -1,4 +1,4 @@
-package edu.nmsu;
+package edu.nmsu.erikness.pointclickcluster;
 
 /**
  * Created by Erik Ness at 3/23/15 4:39 PM

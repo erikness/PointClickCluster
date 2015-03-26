@@ -1,4 +1,7 @@
-package edu.nmsu;
+package edu.nmsu.erikness.pointclickcluster;
+
+import edu.nmsu.erikness.miningcommon.DataSet;
+import edu.nmsu.erikness.miningcommon.Point;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -6,7 +9,6 @@ import java.awt.Cursor;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseEvent;
-import java.util.List;
 
 public class HighlightListener implements MouseListener, MouseMotionListener, ColorObserver
 {

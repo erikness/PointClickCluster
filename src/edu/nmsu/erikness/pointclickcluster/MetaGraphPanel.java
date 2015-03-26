@@ -1,4 +1,4 @@
-package edu.nmsu;
+package edu.nmsu.erikness.pointclickcluster;
 
 import com.google.common.collect.Lists;
 

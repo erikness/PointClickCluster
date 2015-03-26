@@ -1,16 +1,12 @@
-package edu.nmsu;
+package edu.nmsu.erikness.pointclickcluster;
 
 import java.util.List;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
-import java.lang.reflect.Field;
-import java.util.Vector;
 
 import com.google.common.collect.Lists;
+import edu.nmsu.erikness.miningcommon.DataSet;
 
 public class Main
 {
@@ -21,12 +17,12 @@ public class Main
 		int appWidth = appHeight + toolsWidth;
 		
 		/* Initialize the static stuff in the Point class. */
-		Point.pixelWidth = appHeight;
-		Point.pixelHeight = appHeight;
-		Point.gridXMax = 5;
-		Point.gridXMin = -5;
-		Point.gridYMax = 5;
-		Point.gridYMin = -5;
+		edu.nmsu.erikness.miningcommon.Point.pixelWidth = appHeight;
+		edu.nmsu.erikness.miningcommon.Point.pixelHeight = appHeight;
+		edu.nmsu.erikness.miningcommon.Point.gridXMax = 5;
+		edu.nmsu.erikness.miningcommon.Point.gridXMin = -5;
+		edu.nmsu.erikness.miningcommon.Point.gridYMax = 5;
+		edu.nmsu.erikness.miningcommon.Point.gridYMin = -5;
 
 		String dataSetDirectory = "A:/Erik/Documents/PointClickCluster/datasets/";
 		List<DataSet> loadedDataSets = Lists.newArrayList();
