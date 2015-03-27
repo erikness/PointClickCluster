@@ -21,10 +21,19 @@ import java.util.stream.Stream;
 public class DataSet implements Iterable<Point>
 {
 	private ImmutableList<Point> points;
+	private int intendedClusterNumber;
+	private double highScore;
 
 	public DataSet(Collection<Point> points)
 	{
+		this(points, 3, 100);
+	}
+
+	public DataSet(Collection<Point> points, int intendedClusterNumber, double highScore)
+	{
 		this.points = ImmutableList.copyOf(points);
+		this.intendedClusterNumber = intendedClusterNumber;
+		this.highScore = highScore;
 	}
 
 	public Iterator<Point> iterator()
@@ -67,7 +76,11 @@ public class DataSet implements Iterable<Point>
 
 		String contents = new String(encoded, StandardCharsets.US_ASCII);
 		contents = contents.replaceAll("\\s+","");  // get rid of whitespace
-		String[] tuples = contents.split(";");
+		String[] sections = contents.split("\\$");
+		String[] metaParts = sections[0].split(",");
+		int intendedClusters = Integer.parseInt(metaParts[0]);
+		double highScore = Double.parseDouble(metaParts[1]);
+		String[] tuples = sections[1].split(";");
 
 		List<Point> points = Lists.newArrayList();
 		for (String tuple : tuples) {
@@ -76,7 +89,7 @@ public class DataSet implements Iterable<Point>
 			points.add(point);
 		}
 
-		return new DataSet(points);
+		return new DataSet(points, intendedClusters, highScore);
 	}
 
 	public static double score(Collection<DataSet> clusters)
@@ -131,6 +144,11 @@ public class DataSet implements Iterable<Point>
 	public Stream<Point> stream()
 	{
 		return points.stream();
+	}
+
+	public int getIntendedClusterNumber()
+	{
+		return intendedClusterNumber;
 	}
 
 }

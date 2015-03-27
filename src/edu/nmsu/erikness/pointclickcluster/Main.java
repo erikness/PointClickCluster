@@ -49,6 +49,7 @@ public class Main
         csl.setParentComponent(toolsPanel);
 
 		MetaGraphPanel metaGraphPanel = new MetaGraphPanel();
+		metaGraphPanel.setToolsPanel(toolsPanel);
 		for (DataSet ds : loadedDataSets) {
 			GraphPanel graphPanel = new GraphPanel();
 			graphPanel.setPreferredSize(new Dimension(appWidth - toolsWidth, appHeight));

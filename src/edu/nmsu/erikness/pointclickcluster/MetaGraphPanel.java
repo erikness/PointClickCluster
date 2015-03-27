@@ -1,6 +1,7 @@
 package edu.nmsu.erikness.pointclickcluster;
 
 import com.google.common.collect.Lists;
+import edu.nmsu.erikness.miningcommon.Point;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,6 +21,8 @@ public class MetaGraphPanel extends JPanel
 	private List<GraphPanel> panels;
 	private List<DataSetChangeObserver> observers;
 	private GraphPanel currentGraphPanel;
+
+	private ToolsPanel toolsPanel;
 
 	public MetaGraphPanel()
 	{
@@ -65,21 +68,39 @@ public class MetaGraphPanel extends JPanel
 
 	public void next()
 	{
+		toolsPanel.repaint();
+		toolsPanel.setSelectedColor(Point.DEFAULT_COLOR);
 		layout.next(this);
 	}
 
 	public void previous()
 	{
+		toolsPanel.repaint();
+		toolsPanel.setSelectedColor(Point.DEFAULT_COLOR);
 		layout.previous(this);
 	}
 
 	public void first()
 	{
+		toolsPanel.repaint();
+		toolsPanel.setSelectedColor(Point.DEFAULT_COLOR);
 		layout.first(this);
 	}
 
 	public void last()
 	{
+		toolsPanel.repaint();
+		toolsPanel.setSelectedColor(Point.DEFAULT_COLOR);
 		layout.last(this);
+	}
+
+	public ToolsPanel getToolsPanel()
+	{
+		return toolsPanel;
+	}
+
+	public void setToolsPanel(ToolsPanel toolsPanel)
+	{
+		this.toolsPanel = toolsPanel;
 	}
 }

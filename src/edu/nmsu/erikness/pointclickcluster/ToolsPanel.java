@@ -21,7 +21,6 @@ import javax.swing.*;
 public class ToolsPanel extends JPanel
 {
 	public MetaGraphPanel metaGraphPanel;
-	public GraphPanel graphPanel; // fuck your fascist coupling standards
 
 	private int RECT_HEIGHT = 400;
 	private boolean hasRendered = false;
@@ -46,7 +45,7 @@ public class ToolsPanel extends JPanel
 	{
 		super();
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		currentColor = edu.nmsu.erikness.miningcommon.Point.DEFAULT_COLOR;
+		currentColor = Point.DEFAULT_COLOR;
 		currentScore = 0;
 		
 		availableColors = Arrays.asList(
@@ -148,9 +147,14 @@ public class ToolsPanel extends JPanel
 		
 		int col = 0;
 		int row = 0;
+
+		// get a sublist of availableColors, where the length is equal to the current DataSet's
+		// intended clusters
+
+		int clusterNumber = metaGraphPanel.getCurrentGraphPanel().getDataSet().getIntendedClusterNumber();
+
 		
-		for (Color c : availableColors) {
-			// THIS IS WHERE WE FIX THE BLACK DEFAULT THING
+		for (Color c : availableColors.subList(0, clusterNumber)) {
 			g.setColor(c);
 			paintSingleBox(g, margin + col * boxLength, margin + row * boxLength,
 					boxLength, c.equals(currentColor));
