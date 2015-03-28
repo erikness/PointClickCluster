@@ -7,6 +7,7 @@ import java.io.File;
 
 import com.google.common.collect.Lists;
 import edu.nmsu.erikness.miningcommon.DataSet;
+import edu.nmsu.erikness.miningcommon.Point;
 
 public class Main
 {
@@ -17,12 +18,12 @@ public class Main
 		int appWidth = appHeight + toolsWidth;
 		
 		/* Initialize the static stuff in the Point class. */
-		edu.nmsu.erikness.miningcommon.Point.pixelWidth = appHeight;
-		edu.nmsu.erikness.miningcommon.Point.pixelHeight = appHeight;
-		edu.nmsu.erikness.miningcommon.Point.gridXMax = 5;
-		edu.nmsu.erikness.miningcommon.Point.gridXMin = -5;
-		edu.nmsu.erikness.miningcommon.Point.gridYMax = 5;
-		edu.nmsu.erikness.miningcommon.Point.gridYMin = -5;
+		Point.pixelWidth = appHeight;
+		Point.pixelHeight = appHeight;
+		Point.gridXMax = 5;
+		Point.gridXMin = -5;
+		Point.gridYMax = 5;
+		Point.gridYMin = -5;
 
 		String dataSetDirectory = "A:/Erik/Documents/PointClickCluster/datasets/";
 		List<DataSet> loadedDataSets = Lists.newArrayList();

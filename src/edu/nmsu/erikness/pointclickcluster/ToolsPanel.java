@@ -85,7 +85,7 @@ public class ToolsPanel extends JPanel
 				Map<Color, List<Point>> clustersTmp =
 						ds.stream().collect(Collectors.groupingBy(Point::getColor));
 				Map<Color, DataSet> clusters = Maps.transformValues(clustersTmp, lst -> new DataSet(lst));
-				double score = DataSet.score(clusters.values());
+				double score = DataSet.score(clusters.values(), ds);
 				currentScore = score;
 				thisTmp.repaint();
 			}

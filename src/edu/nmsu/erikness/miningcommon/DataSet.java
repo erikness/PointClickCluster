@@ -22,18 +22,23 @@ public class DataSet implements Iterable<Point>
 {
 	private ImmutableList<Point> points;
 	private int intendedClusterNumber;
+
 	private double highScore;
+	private double lowScore;
 
 	public DataSet(Collection<Point> points)
 	{
-		this(points, 3, 100);
+		// -1 for any of these values means "I don't know" - usually, an entire dataset may have meta metrics
+		// that we've calculated beforehand, but its subsets won't have them and won't need them.
+		this(points, -1, -1, -1);
 	}
 
-	public DataSet(Collection<Point> points, int intendedClusterNumber, double highScore)
+	public DataSet(Collection<Point> points, int intendedClusterNumber, double highScore, double lowScore)
 	{
 		this.points = ImmutableList.copyOf(points);
 		this.intendedClusterNumber = intendedClusterNumber;
 		this.highScore = highScore;
+		this.lowScore = lowScore;
 	}
 
 	public Iterator<Point> iterator()
@@ -80,6 +85,7 @@ public class DataSet implements Iterable<Point>
 		String[] metaParts = sections[0].split(",");
 		int intendedClusters = Integer.parseInt(metaParts[0]);
 		double highScore = Double.parseDouble(metaParts[1]);
+		double lowScore = Double.parseDouble(metaParts[2]);
 		String[] tuples = sections[1].split(";");
 
 		List<Point> points = Lists.newArrayList();
@@ -89,10 +95,10 @@ public class DataSet implements Iterable<Point>
 			points.add(point);
 		}
 
-		return new DataSet(points, intendedClusters, highScore);
+		return new DataSet(points, intendedClusters, highScore, lowScore);
 	}
 
-	public static double score(Collection<DataSet> clusters)
+	public static double score(Collection<DataSet> clusters, DataSet original)
 	{
 		// a good clustering minimizes within-cluster sum of squares, while maximizing the distance
 		// between the clusters
@@ -119,10 +125,19 @@ public class DataSet implements Iterable<Point>
 
 		System.out.println(withinClusterErrors);
 		System.out.println(withinClusterErrors.stream().mapToDouble(Double::doubleValue).sum());
-		System.out.println(betweenClusterError);
+		System.out.println(original.getHighScore());
+		System.out.println(original.getLowScore());
 
 		// now how do we come up with a score based on these? HMMMMMMMMMM
-		return 0.5;
+		// answer: use the highScore (which is really the lowest possible WCSS), scale it between the worst possible
+		// clustering, and return the ratio. May have to re-represent in a log or exponential format.
+
+		double withinClusterTotalError = withinClusterErrors.stream().mapToDouble(Double::doubleValue).sum();
+
+		double inverseScore = (withinClusterTotalError - original.getHighScore()) /
+				(original.getLowScore() - original.getHighScore());
+
+		return 1 - inverseScore;
 	}
 
 	public static double sumOfSquares(DataSet cluster)
@@ -151,4 +166,13 @@ public class DataSet implements Iterable<Point>
 		return intendedClusterNumber;
 	}
 
+	public double getHighScore()
+	{
+		return highScore;
+	}
+
+	public double getLowScore()
+	{
+		return lowScore;
+	}
 }
