@@ -1,7 +1,5 @@
 package edu.nmsu.erikness.pointclickcluster;
 
-import edu.nmsu.erikness.miningcommon.DataSet;
-
 import java.awt.*;
 import javax.swing.*;
 
@@ -10,7 +8,7 @@ import javax.swing.*;
  */
 public class GraphPanel extends JPanel
 {
-	private DataSet dataset;
+	private DataSetWithScores dataset;
 	
 	public GraphPanel()
 	{	
@@ -26,12 +24,12 @@ public class GraphPanel extends JPanel
 		paintDataSets(g);
 	}
 	
-	public void setDataSet(DataSet ds)
+	public void setDataSet(DataSetWithScores ds)
 	{
 		dataset = ds;
 	}
 	
-	public DataSet getDataSet()
+	public DataSetWithScores getDataSet()
 	{
 		return dataset;
 	}

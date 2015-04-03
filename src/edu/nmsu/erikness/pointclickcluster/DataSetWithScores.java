@@ -1,76 +1,61 @@
-package edu.nmsu.erikness.miningcommon;
+package edu.nmsu.erikness.pointclickcluster;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import edu.nmsu.erikness.miningcommon.DataSet;
+import edu.nmsu.erikness.miningcommon.Point;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
- * Created by Erik Ness at 1/21/15 5:55 PM
- *
- * For the purposes of this project, any data point can be represented as a point in R^2.
+ * Created by Erik Ness at 3/28/2015 12:47 AM
  */
-public class DataSet implements Iterable<Point>
+public class DataSetWithScores extends DataSet
 {
-	private ImmutableList<Point> points;
 	private int intendedClusterNumber;
-
 	private double highScore;
 	private double lowScore;
 
-	public DataSet(Collection<Point> points)
+	public DataSetWithScores(Collection<Point> points)
 	{
 		// -1 for any of these values means "I don't know" - usually, an entire dataset may have meta metrics
 		// that we've calculated beforehand, but its subsets won't have them and won't need them.
 		this(points, -1, -1, -1);
 	}
 
-	public DataSet(Collection<Point> points, int intendedClusterNumber, double highScore, double lowScore)
+	public DataSetWithScores(Collection<Point> points, int intendedClusterNumber, double highScore, double lowScore)
 	{
-		this.points = ImmutableList.copyOf(points);
+		super(points);
 		this.intendedClusterNumber = intendedClusterNumber;
 		this.highScore = highScore;
 		this.lowScore = lowScore;
 	}
-
-	public Iterator<Point> iterator()
+	public static DataSetWithScores fromStream(InputStream stream)
 	{
-		return points.iterator();
+		String line = null;
+		StringBuilder all = new StringBuilder();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		try {
+			while ((line = reader.readLine()) != null) {
+				all.append(line);
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+		return fromDirectContents(all.toString());
 	}
 
-    public int size()
-    {
-        return points.size();
-    }
-
-	public Point mean()
-	{
-		// For now, assume that no numbers will be big enough to overflow.
-        double xTotal = 0;
-        double yTotal = 0;
-        
-        for (Point p : this) {
-            xTotal += p.asGrid().x;
-            yTotal += p.asGrid().y;
-        }
-
-        return Point.fromGrid(xTotal / this.size(), yTotal / this.size());
-	}
-
-	public static DataSet fromFile(File f)
+	public static DataSetWithScores fromFile(File f)
 	{
 		return fromFile(f.getPath());
 	}
 
-	public static DataSet fromFile(String path)
+	public static DataSetWithScores fromFile(String path)
 	{
 		byte[] encoded;
 		try {
@@ -80,6 +65,11 @@ public class DataSet implements Iterable<Point>
 		}
 
 		String contents = new String(encoded, StandardCharsets.US_ASCII);
+		return fromDirectContents(contents);
+	}
+
+	public static DataSetWithScores fromDirectContents(String contents)
+	{
 		contents = contents.replaceAll("\\s+","");  // get rid of whitespace
 		String[] sections = contents.split("\\$");
 		String[] metaParts = sections[0].split(",");
@@ -95,10 +85,10 @@ public class DataSet implements Iterable<Point>
 			points.add(point);
 		}
 
-		return new DataSet(points, intendedClusters, highScore, lowScore);
+		return new DataSetWithScores(points, intendedClusters, highScore, lowScore);
 	}
 
-	public static double score(Collection<DataSet> clusters, DataSet original)
+	public static double score(Collection<DataSet> clusters, DataSetWithScores original)
 	{
 		// a good clustering minimizes within-cluster sum of squares, while maximizing the distance
 		// between the clusters
@@ -138,27 +128,6 @@ public class DataSet implements Iterable<Point>
 				(original.getLowScore() - original.getHighScore());
 
 		return 1 - inverseScore;
-	}
-
-	public static double sumOfSquares(DataSet cluster)
-	{
-		Point.Pair centroid = cluster.mean().asGrid();
-
-		// iterate again now y'all! Use euclidean distance (though no square root, because we square it again for
-		// squared error
-		double errorSum = 0;
-		for (Point p : cluster) {
-			Point.Pair pair = p.asGrid();
-			double sqError = Math.pow(pair.x - centroid.x, 2) + Math.pow(pair.y - centroid.y, 2);
-			errorSum += sqError;
-		}
-
-		return errorSum;
-	}
-
-	public Stream<Point> stream()
-	{
-		return points.stream();
 	}
 
 	public int getIntendedClusterNumber()

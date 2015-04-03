@@ -81,11 +81,11 @@ public class ToolsPanel extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				DataSet ds = metaGraphPanel.getCurrentGraphPanel().getDataSet();
+				DataSetWithScores ds = metaGraphPanel.getCurrentGraphPanel().getDataSet();
 				Map<Color, List<Point>> clustersTmp =
 						ds.stream().collect(Collectors.groupingBy(Point::getColor));
 				Map<Color, DataSet> clusters = Maps.transformValues(clustersTmp, lst -> new DataSet(lst));
-				double score = DataSet.score(clusters.values(), ds);
+				double score = DataSetWithScores.score(clusters.values(), ds);
 				currentScore = score;
 				thisTmp.repaint();
 			}
@@ -150,7 +150,6 @@ public class ToolsPanel extends JPanel
 
 		// get a sublist of availableColors, where the length is equal to the current DataSet's
 		// intended clusters
-
 		int clusterNumber = metaGraphPanel.getCurrentGraphPanel().getDataSet().getIntendedClusterNumber();
 
 		
