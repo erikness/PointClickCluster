@@ -2,13 +2,18 @@ package edu.nmsu.erikness.pointclickcluster;
 
 import java.io.*;
 import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.CodeSource;
 import java.util.List;
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import edu.nmsu.erikness.miningcommon.Point;
 
@@ -35,11 +40,12 @@ public class Main
 		 * For now, the quick fix is detecting whether we're in a jar or in the IDE, and loading based on that.
 		 * Fight me.
 		 */
-		if (inJar()) {
-			loadedDataSets = loadDataSetsAsJar(internalDataSetsPath);
-		} else {
-			loadedDataSets = loadDataSetsAsProject(internalDataSetsPath);
-		}
+//		if (inJar()) {
+//			loadedDataSets = loadDataSetsAsJar(internalDataSetsPath);
+//		} else {
+//			loadedDataSets = loadDataSetsAsProject(internalDataSetsPath);
+//		}
+		loadedDataSets = loadDataSetsAntwise();
 
 		JFrame applicationFrame = new JFrame();
 		applicationFrame.setPreferredSize(new Dimension(appWidth, appHeight));
@@ -104,6 +110,22 @@ public class Main
 	{
 		URL here = Main.class.getClassLoader().getResource("edu/nmsu/erikness/pointclickcluster/Main.class");
 		return here.toString().startsWith("jar");
+	}
+
+	private static List<DataSetWithScores> loadDataSetsAntwise()
+	{
+		String location = "datasets";  // relative to the jar file
+		URL jarLocation = Main.class.getProtectionDomain().getCodeSource().getLocation();
+		URI jarParent;
+		try {
+			jarParent = jarLocation.toURI().resolve(".");
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
+		}
+		URI dirURI = jarParent.resolve(location);
+		return Arrays.stream(new File(dirURI).listFiles())
+				.map(file -> DataSetWithScores.fromFile(file))
+				.collect(Collectors.toList());
 	}
 
 	private static List<DataSetWithScores> loadDataSetsAsJar(String internalDataSetsPath)
